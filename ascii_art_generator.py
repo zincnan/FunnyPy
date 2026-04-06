@@ -6,6 +6,8 @@ ASCII Art Generator - 一个有趣的 ASCII 艺术生成器
 
 import random
 import sys
+import time
+import shutil
 import pyfiglet
 
 # ANSI 颜色码
@@ -128,7 +130,7 @@ MINI_ARTS = {
 
 def print_colored(text: str, color: str) -> None:
     """打印彩色文本"""
-    color_code = COLORS.get(color, list(COLORS.values())[6])  # white is index 6
+    color_code = COLORS.get(color, COLORS['white'])
     print(f"{color_code}{text}{COLORS['reset']}")
 
 
@@ -151,18 +153,15 @@ def display_font(text: str, font: str = 'block') -> None:
     """显示字体艺术"""
     try:
         art = pyfiglet.figlet_format(text, font=font)
-        for line in art.split('\n'):
-            print_colored(line, random.choice(RAINBOW))
     except pyfiglet.FontNotFound:
         print_colored(f"字体 '{font}' 未找到，使用默认字体", 'yellow')
         art = pyfiglet.figlet_format(text)
-        for line in art.split('\n'):
-            print_colored(line, random.choice(RAINBOW))
+    for line in art.split('\n'):
+        print_colored(line, random.choice(RAINBOW))
 
 
 def spinning_loader(duration: int = 3) -> None:
     """旋转加载动画"""
-    import time
     frames = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
     end_time = time.time() + duration
     while time.time() < end_time:
@@ -174,23 +173,19 @@ def spinning_loader(duration: int = 3) -> None:
 
 def matrix_rain(duration: int = 5) -> None:
     """矩阵雨效果"""
-    import time
-    import random as r
-
     chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン"
     columns = min(50, shutil.get_terminal_size().columns)
 
     end_time = time.time() + duration
     while time.time() < end_time:
-        col = r.randint(0, columns - 1)
-        line = ''.join(r.choice(chars) for _ in range(r.randint(1, 10)))
+        col = random.randint(0, columns - 1)
+        line = ''.join(random.choice(chars) for _ in range(random.randint(1, 10)))
         print_colored(f"{' ' * col}{line}", random.choice(RAINBOW))
         time.sleep(0.05)
 
 
 def magic_8_ball() -> None:
     """魔法8球"""
-    import time
 
     responses = [
         "肯定是的！", "很可能！", "也许吧...", "不太确定",
@@ -247,7 +242,6 @@ def ascii_cow(text: str) -> None:
 
 def fortune_teller() -> None:
     """算命先生"""
-    import time
 
     fortunes = [
         ("💼", "今天会遇到贵人相助！"),
@@ -345,9 +339,6 @@ def love_calculator() -> None:
     else:
         msg = "加油！缘分天注定~"
     print_colored(f"✨ {msg} ✨", 'yellow')
-
-
-import shutil
 
 
 def show_menu() -> None:
