@@ -33,6 +33,8 @@ pip install pyfiglet
 ## 运行
 
 ```bash
+# 激活 conda 环境后运行
+conda activate py312
 python3 ascii_art_generator.py
 ```
 
